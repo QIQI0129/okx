@@ -1,0 +1,63 @@
+env:
+  demo: true
+  base_url_demo: "https://www.okx.com"
+  base_url_prod: "https://www.okx.com"
+
+  use_ws: true
+  ws_public_demo: "wss://wspap.okx.com:8443/ws/v5/public?brokerId=9999"
+  ws_private_demo: "wss://wspap.okx.com:8443/ws/v5/private?brokerId=9999"
+
+  ws_public_prod: "wss://ws.okx.com:8443/ws/v5/public"
+  ws_private_prod: "wss://ws.okx.com:8443/ws/v5/private"
+
+  ws_ping_interval_sec: 15
+  ws_reconnect_delay_sec: 3
+
+proxy:
+  enabled: true
+  # 本机直跑用 127.0.0.1；Docker 里请改成 http://host.docker.internal:7890
+  url: "http://127.0.0.1:7890"
+  no_proxy: "localhost,127.0.0.1"
+
+auth:
+  api_key: "*************************************"
+  api_secret: "*************************************"
+  passphrase: "*************************************"
+
+account:
+  td_mode: "isolated"
+  leverage: 5
+
+trade:
+  allow_hedge: true          # 允许同时多+空（对冲/双向）
+  max_long_positions: 1      # 多头最多允许多少个“存在仓位”的门禁（通常 1 就够）
+  max_short_positions: 1     # 空头最多允许多少个“存在仓位”的门禁（通常 1 就够
+  inst_id: "BTC-USDT-SWAP"
+  bar: "1m"
+  cooldown_sec: 20
+  max_positions: 1
+
+  # 订单超时：提交后超过该秒数仍未 filled，则执行超时策略
+  order_timeout_sec: 60
+
+  # 超时策略：
+  # - 若已部分成交：撤销剩余并标记 done（避免重复开仓）
+  # - 若未成交：撤销并清理 pending，允许后续重试
+  cancel_on_timeout: true
+
+
+risk:
+  risk_pct_per_trade: 0.005
+  daily_loss_limit_pct: 0.03
+
+strategy:
+  fast: 9
+  slow: 21
+
+exit:
+  sl_pct: 0.005
+  tp_pct: 0.01
+
+
+store:
+  path: "data/okx_quant.db"
